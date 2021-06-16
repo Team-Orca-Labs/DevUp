@@ -5,7 +5,7 @@ const { PG_URI } = require('../env');
 const pool = new Pool({
   connectionString: PG_URI,
 });
-
+console.log(PG_URI);
 module.exports = {
   pool,
 };
