@@ -1,11 +1,18 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const http = require('http');
+const app = express();
+const server = http.createServer(app);
+const io = require('socket.io')(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+  },
+});
+
 const { userRouter, matchRouter, authRouter } = require('./routes');
 const { createTables } = require('./models');
 const { NODE_ENV } = require('./env');
-
-const app = express();
 
 // middleware
 app.use(express.json());
@@ -37,7 +44,7 @@ app.use((err, req, res, next) => {
 // start
 createTables()
   .then(() => {
-    app.listen(3001, () => {
+    server.listen(3001, () => {
       console.log('server started');
     });
   })
