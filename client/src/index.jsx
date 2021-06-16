@@ -10,6 +10,7 @@ import * as actions from './actions/actions';
 import store from './store';
 import { API_URL } from './env';
 import Onboard from './components/Onboard';
+import socket from './socket';
 
 function App() {
   const history = useHistory();
@@ -35,6 +36,9 @@ function App() {
         .catch(console.log);
     }
   }, []);
+
+  socket.auth = {};
+  socket.connect();
 
   return (
     <Switch>
