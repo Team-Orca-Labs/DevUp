@@ -4,9 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --verbose",
     "build": "webpack",
     "dev": "webpack serve"
+  },
+  "jest": {
+    "globalSetup": "./jest-setup.js",
+    "globalTeardown": "./jest-teardown.js"
   },
   "author": "",
   "license": "ISC",
@@ -27,11 +31,15 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "enzyme": "^3.11.0",
+    "enzyme-to-json": "^3.6.2",
+    "jest": "^27.0.4",
     "qs": "^6.7.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
-    "redux": "^4.1.0"
+    "redux": "^4.1.0",
+    "supertest": "^6.1.3"
   }
 }

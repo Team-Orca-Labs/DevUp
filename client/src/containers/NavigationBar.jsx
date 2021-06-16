@@ -12,7 +12,7 @@ function NavigationBar(props) {
         Develop relationships while you develop software.<br></br>Only Devs...
         for Lonely Devs
       </div>
-      <div className="col span_2_of_3 nav textLogo">Only Devs</div>
+      <div className="col span_2_of_3 nav textLogo">DevUp</div>
       <div className="col span_1_of_3 nav navProfile">
         <img
           id="navProfilePic"
