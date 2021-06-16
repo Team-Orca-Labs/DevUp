@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import MatchesContent from '../components/MatchesContent';
 import LikesContent from '../components/LikesContent';
 import ExploreContent from '../components/ExploreContent';
+import ChatContent from '../components/ChatContent';
 
 function mapStateToProps(state) {
   return {
@@ -17,6 +18,7 @@ function MainContent(props) {
       <Switch>
         <Route path="/likes" component={LikesContent} />
         <Route path="/explore" component={ExploreContent} />
+        <Route path="/chat" component={ChatContent} />
         <Route path="/" component={MatchesContent} />
       </Switch>
     </div>

@@ -308,6 +308,9 @@ body {
   #likesContentParent {
     grid-template-columns: repeat(3, 1fr);
   }
+  center {
+    font-size: 1rem;
+  }
 }
 
 @media screen and (min-width: 750px) and (max-width: 1700px) {
@@ -377,7 +380,67 @@ body {
 /////////////////////////// CHAT BAR /////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 
-#chatBar {
+// from previous code
+// #chatBar {
+//   height: 100%;
+//   width: 100%;
+//   padding-top: 65px;
+// }
+
+*::-webkit-scrollbar {
+  width: 7px;
+}
+
+*::-webkit-scrollbar-track {
+  background: gray;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: white;
+  border-radius: 15px;
+  border: 3px solid black;
+}
+
+#chatContent {
+  max-height: 500px;
+  // border: 4px dotted red;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 1fr 7fr;
+  grid-template-areas: 
+    "head head"
+    "nav chat";
+}
+
+#chatContent > center {
+  grid-area: head;
+}
+
+#chatContent > nav {
+  background-color: rgb(218, 217, 217);
+  border: 1px solid rgb(218, 217, 217);
+  grid-area: nav;
+  display: grid;
+  // flex-flow: row wrap;
+  // align-items: flex-start;
+  justify-self: end;
+  width: 150px;
+  overflow-y: scroll;
+}
+
+#chatNames {
+  border: 1px solid rgb(142, 142, 142);
+  height: 30px;
+  padding: 1rem;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#singlechat {
+  grid-area: chat;
+  border: 1px solid rgb(218, 217, 217);
   height: 100%;
   width: 100%;
   padding-top: 65px;

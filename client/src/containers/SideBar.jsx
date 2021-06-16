@@ -42,6 +42,11 @@ function SideBar(props) {
         description="Explore some lonely devs that can be your next partner"
         onClick={() => history.push("/explore")}
       ></SideBarTab>
+      <SideBarTab
+        tabName="Chat"
+        description="Chat with your matches"
+        onClick={() => history.push("/chat")}
+      ></SideBarTab>
     </div>
   );
 }
