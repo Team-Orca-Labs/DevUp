@@ -95,7 +95,7 @@ function ExploreContent(props) {
   return (
     <div>
       <center>
-        <h1 className="textPopIn">Look for some lonely devs.</h1>
+        <h1 className="textPopIn">Pair Programmers Near You</h1>
       </center>
       <div
         id="exploreContentParent"
