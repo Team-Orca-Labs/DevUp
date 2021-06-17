@@ -20,6 +20,7 @@ function mapStateToProps(state) {
 
 function ChatContent(props) {
   const [usersState, setUsersState] = useState([]);
+  const [messageDisplay, setmessageDisplay] = useState();
 
   const dispatch = useDispatch();
   const id = useSelector((state) => state.onlyDevs.id);
@@ -38,6 +39,12 @@ function ChatContent(props) {
         .catch((err) => console.log(err));
     }
   }, [id]);
+
+  useEffect(() => {
+    if (selectedUser) {
+      messageDisplayFunc();
+    }
+  }, [selectedUser]);
 
   // *******************************************
   // socket.io
@@ -111,7 +118,9 @@ function ChatContent(props) {
     matchesNames.push(
       <Link
         to={`${url}/:${usersState[i].userId}`}
-        onClick={() => setSelectedUser(usersState[i])}
+        onClick={() => {
+          setSelectedUser(usersState[i]);
+        }}
         id="chatlink"
         key={i}
       >
@@ -137,7 +146,6 @@ function ChatContent(props) {
   function sendMessage(content) {
     //when user sends message, it emits the userId of user they're sending it to
     //need to grab selectedUser from when the user clicks the link
-    console.log("selectedUser", selectedUser);
     if (selectedUser) {
       socket.emit("private message", {
         content,
@@ -148,6 +156,7 @@ function ChatContent(props) {
         content,
         fromSelf: true,
       });
+      messageDisplayFunc();
     }
     // whats the endpath for database updates?
     //still need to push to db
@@ -177,6 +186,7 @@ function ChatContent(props) {
     //finds the user from users in state that matches the userId we sent message to
     for (let i = 0; i < usersState.length; i++) {
       const user = usersState[i];
+      console.log("user.userId", user.userID, from);
       if (user.userID === from) {
         //pushes message to that user's messages prop
         user.messages.push({
@@ -210,11 +220,17 @@ function ChatContent(props) {
     });
   });
 
-  const messageDisplay = () => {
-    const messages = selectedUser.messages.map((ele) => <p>{ele.content}</p>);
-    console.log("messages", messages);
-    return messages;
+  const messageDisplayFunc = () => {
+    const messages = selectedUser.messages.map((ele) => {
+      if (ele.fromSelf) {
+        return <p>{`(you) ${ele.content}`}</p>;
+      } else {
+        return <p>{`(${selectedUser.username}) ${ele.content}`}</p>;
+      }
+    });
+    setmessageDisplay(messages);
   };
+
   return (
     <div id="chatContent">
       <center>
@@ -231,10 +247,7 @@ function ChatContent(props) {
           </Route>
           {matchesChats}
         </Switch>
-        <div id="chatbox">
-          <img src="https://i.imgur.com/TabKA8t.png" />
-          {selectedUser && messageDisplay()}
-        </div>
+        <div id="chatbox">{selectedUser && messageDisplay}</div>
         <div id="inputsend">
           <input
             id="messageInput"
