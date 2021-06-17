@@ -120,7 +120,7 @@ function ExploreContent(props) {
           className="promiseBtn reject"
           style={{
             float: "right",
-            backgroundColor: "rgb(255, 32, 32 )",
+            backgroundColor: "#ff5555",
             marginTop: "30px",
             marginRight: "20%",
           }}
@@ -132,7 +132,7 @@ function ExploreContent(props) {
           className="promiseBtn fulfill"
           style={{
             float: "left",
-            backgroundColor: "rgb(52, 173, 42)",
+            backgroundColor: "#50fa7b",
             marginTop: "30px",
             marginLeft: "20%",
           }}
