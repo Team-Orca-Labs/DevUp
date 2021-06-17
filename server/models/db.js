@@ -1,11 +1,11 @@
-const { Pool } = require('pg');
-const { PG_URI } = require('../env');
+const { Pool } = require("pg");
+const { PG_URI } = require("../env");
 
 // create a new pool here using the connection string above
 const pool = new Pool({
   connectionString: PG_URI,
 });
-console.log(PG_URI);
+
 module.exports = {
   pool,
 };
