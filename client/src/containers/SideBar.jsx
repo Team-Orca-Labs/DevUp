@@ -29,17 +29,17 @@ function SideBar(props) {
     <div id="sideBar" className="">
       <SideBarTab
         tabName="Matches"
-        description="Checkout some of the matches you have made"
+        description="Checkout some of the matches you've made"
         onClick={() => history.push("/")}
       ></SideBarTab>
       <SideBarTab
         tabName="Liked By"
-        description="Devs that want you."
+        description="Devs that want to pair with you."
         onClick={() => history.push("/likes")}
       ></SideBarTab>
       <SideBarTab
         tabName="Explore"
-        description="Explore some lonely devs that can be your next partner"
+        description="Explore some devs that can be your next partner"
         onClick={() => history.push("/explore")}
       ></SideBarTab>
       <SideBarTab

@@ -45,7 +45,7 @@ function MatchesContent(props) {
   return (
     <div>
       <center>
-        <h1 className="textPopIn">Your matches with other lonely devs.</h1>
+        <h1 className="textPopIn">It's a match!</h1>
       </center>
       <div id="matchesContentParent">{matchesArr}</div>
     </div>
