@@ -420,12 +420,13 @@ body {
   background-color: rgb(218, 217, 217);
   border: 1px solid rgb(218, 217, 217);
   grid-area: nav;
-  display: grid;
-  // flex-flow: row wrap;
-  // align-items: flex-start;
+  display: flex;
+  flex-flow: column;
+  align-items: start;
   justify-self: end;
   width: 150px;
   overflow-y: scroll;
+  // align-items: center;
 }
 
 #chatNames {
@@ -433,9 +434,20 @@ body {
   height: 30px;
   padding: 1rem;
   margin: 0;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+
+}
+
+#chatlink {
+  // border: 1px solid black;
+  text-decoration: none;
   display: flex;
   justify-content: center;
   align-items: center;
+  // margin-left: 0.5rem;
+  padding: 0.5rem 1rem;
 }
 
 #singlechat {
@@ -444,6 +456,28 @@ body {
   height: 100%;
   width: 100%;
   padding-top: 65px;
+  display: flex;
+  position: relative;
+}
+
+#inputsend {
+  width: 100%;
+  border: 1px solid black;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-basis: auto
+}
+
+#inputsend > input {
+  // width: 202px;
+  flex-grow: 1;
+}
+
+#inputsend > button {
+  width: 50px;
+  position: absolute;
+  right: 0;
 }
 
 ///////////////////////////////////////////////////////////////////////
