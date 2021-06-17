@@ -9,8 +9,7 @@
     "dev": "webpack serve"
   },
   "jest": {
-    "globalSetup": "./jest-setup.js",
-    "globalTeardown": "./jest-teardown.js"
+    "globalSetup": "./jest-setup.js"
   },
   "author": "",
   "license": "ISC",

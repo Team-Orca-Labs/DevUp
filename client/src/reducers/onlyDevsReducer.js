@@ -1,4 +1,5 @@
-import * as types from "../actions/actionsTypes";
+// import * as types from "../actions/actionsTypes";
+const types = require("../actions/actionsTypes");
 
 const initialState = {
   id: null,
@@ -71,4 +72,4 @@ function onlyDevsReducer(state = initialState, action) {
   }
 }
 
-export default onlyDevsReducer;
+module.exports = onlyDevsReducer;

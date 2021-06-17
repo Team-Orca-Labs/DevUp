@@ -1,4 +1,4 @@
-import subject from '../src/reducers/onlyDevsReducer.js'
+const subject = require('../src/reducers/onlyDevsReducer.js');
 
 
 describe('onlyDevsReducer', () => {
