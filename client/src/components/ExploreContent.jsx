@@ -115,18 +115,7 @@ function ExploreContent(props) {
         )}
       </div>
       <div>
-        <button
-          className="promiseBtn fulfill"
-          style={{
-            float: "left",
-            backgroundColor: "rgb(52, 173, 42)",
-            marginTop: "30px",
-            marginLeft: "20%",
-          }}
-          onClick={consumePromise}
-        >
-          Fulfill Promise
-        </button>
+
         <button
           className="promiseBtn reject"
           style={{
@@ -139,6 +128,19 @@ function ExploreContent(props) {
         >
           Reject Promise
         </button>
+        <button
+          className="promiseBtn fulfill"
+          style={{
+            float: "left",
+            backgroundColor: "rgb(52, 173, 42)",
+            marginTop: "30px",
+            marginLeft: "20%",
+          }}
+          onClick={consumePromise}
+        >
+          Fulfill Promise
+        </button>
+
       </div>
     </div>
   );
