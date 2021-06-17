@@ -25,4 +25,36 @@ describe('onlyDevsReducer', () => {
       });
     });
 
+    
+    describe('update likes', () => {
+      it('should update users liked by', () => {
+        const action = {
+          type: 'UPDATE_LIKEDBY',
+          payload: ['davette', 'jeff', 'victor']
+        };
+        expect(subject(state, action).likes).toBe(action.payload);
+      });
+    });
+    
+    describe('update username', () => {
+      it('should update username', () => {
+        const action = {
+          type: 'EDIT_PROFILE_NAME',
+          payload: 'Dracula'
+        };
+        expect(subject(state, action).username).toBe(action.payload);
+      });
+    });
+
+    describe('update the explore page', () => {
+      it('should return an array of users', () => {
+        const action = {
+          type: 'UPDATE_EXPLORE',
+          payload: ['Dracula', 'Jeff', 'Victor']
+        };
+        expect(subject(state, action).explore).toBe(action.payload);
+      });
+    });
+
+
 })

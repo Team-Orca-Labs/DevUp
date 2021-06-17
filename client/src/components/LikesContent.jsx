@@ -58,7 +58,7 @@ function LikesContent(props) {
   return (
     <div>
       <center>
-        <h1 className="textPopIn">Lonely devs that you've liked.</h1>
+        <h1 className="textPopIn">Devs that want to pair with you.</h1>
       </center>
       <div id="likesContentParent">{likesArr}</div>
     </div>
