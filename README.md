@@ -1,6 +1,6 @@
 # DevUp
 
-DevUp is a solution to those trying to find a pair programming partne
+DevUp is a solution to those trying to find a pair programming partner
 (A matching application for you developers)
 Scratch project
 
