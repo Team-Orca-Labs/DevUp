@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import NavigationBar from "./NavigationBar";
 import SideBar from "./SideBar";
 import MainContent from "./MainContent";
-import ChatBar from "./ChatBar";
+import ChatBar from "../components/ChatContent";
 import ProfileModal from "../components/ProfileModal";
 
 function mapStateToProps(state) {
@@ -32,9 +32,9 @@ function MainContainer(props) {
           <MainContent></MainContent>
           <ProfileModal></ProfileModal>
         </div>
-        <div className="div3">
+        {/* <div className="div3">
           <ChatBar></ChatBar>
-        </div>
+        </div> */}
       </div>
     </div>
   );
