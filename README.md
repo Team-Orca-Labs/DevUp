@@ -1,7 +1,7 @@
 # DevUp
 
-Only Devs for Lonely Devs
-(A dating application for you losers)
+DevUp is a solution to those trying to find a pair programming partne
+(A matching application for you developers)
 Scratch project
 
 Front-end: REACT with Redux, react router dom for compenent render based on uri.
