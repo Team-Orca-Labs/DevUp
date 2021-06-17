@@ -43,9 +43,10 @@ io.use((socket, next) => {
 io.on("connection", (socket) => {
   const users = [];
   //loop over object of all currently connected Socket instances indexed by ID
+  console.log("io.of", io.of("/").sockets);
   for (let [id, socket] of io.of("/").sockets) {
     users.push({
-      userID: id,
+      user: id,
       username: socket.username,
     });
   }
@@ -54,7 +55,7 @@ io.on("connection", (socket) => {
 
   // notify existing users that user has connected
   socket.broadcast.emit("user connected", {
-    userID: socket.id,
+    id: socket.id,
     username: socket.username,
   });
 });

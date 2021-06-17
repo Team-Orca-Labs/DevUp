@@ -33,8 +33,12 @@ function App() {
           }
           // put the user in the github store
           dispatch(actions.updateUser(data.user));
-          //store userId in socket.auth and start socket connection
-          socket.auth = { username: data.user.id };
+          //store userId in socket.auth and start socket connection\
+          console.log("data of user", data.user);
+          socket.auth = {
+            username: data.user.username,
+            id: data.user.id,
+          };
           socket.connect();
         })
         .then(() => console.log("pp", socket))
@@ -74,13 +78,14 @@ function App() {
   //sets user self to active and push to users array
   socket.on("user connected", (user) => {
     initReactiveProperties(user);
-    this.users.push(user);
+    setUsersState([...usersState, user]);
+    // users.push(user);
   });
 
-  //after state change
-  // useEffect(() => {
-  //   console.log(setUsersState);
-  // }, [usersState]);
+  // after state change
+  useEffect(() => {
+    console.log(setUsersState);
+  }, [usersState]);
 
   console.log("usersState", usersState);
   return (
