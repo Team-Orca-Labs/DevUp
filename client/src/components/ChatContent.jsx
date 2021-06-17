@@ -10,6 +10,7 @@ import {
   useRouteMatch,
 } from "react-router-dom";
 import { API_URL } from "../env";
+import socket from "../socket";
 
 function mapStateToProps(state) {
   return {
@@ -18,10 +19,13 @@ function mapStateToProps(state) {
 }
 
 function ChatContent(props) {
+  const [usersState, setUsersState] = useState([]);
+
   const dispatch = useDispatch();
   const id = useSelector((state) => state.onlyDevs.id);
 
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState();
+  const [selectedUser, setSelectedUser] = useState();
 
   useEffect(() => {
     if (id) {
@@ -34,6 +38,47 @@ function ChatContent(props) {
         .catch((err) => console.log(err));
     }
   }, [id]);
+
+  // *******************************************
+  // socket.io
+  // *******************************************
+  const initReactiveProperties = (user) => {
+    user.connected = true;
+    user.messages = [];
+    user.hasNewMessages = false;
+  };
+
+  socket.on("users", (users) => {
+    users.forEach((user) => {
+      console.log(user.userId, socket.id);
+      user.self = user.id === socket.id;
+      initReactiveProperties(user);
+    });
+    // put the current user first, and then sort by username
+    users = users.sort((a, b) => {
+      if (a.self) return -1;
+      if (b.self) return 1;
+      if (a.username < b.username) return -1;
+      return a.username > b.username ? 1 : 0;
+    });
+    setUsersState(users);
+  });
+
+  //sets user self to active and push to users array
+  socket.on("user connected", (user) => {
+    console.log("user", user);
+    initReactiveProperties(user);
+    setUsersState([...usersState, user]);
+    // users.push(user);
+  });
+
+  // after state change
+  useEffect(() => {
+    console.log("usersState", usersState);
+    console.log("selectedUser", selectedUser);
+  }, [usersState, selectedUser]);
+
+  console.log("usersState", usersState);
 
   let matchesNames = [];
   let matchesChats = [];
@@ -62,14 +107,22 @@ function ChatContent(props) {
 
   let { path, url } = useRouteMatch();
 
-  for (let i = 0; i < sampleNames.length; i++) {
+  for (let i = 0; i < usersState.length; i++) {
     matchesNames.push(
-      <Link to={`${url}/:${sampleNames[i]}`} id="chatlink" key={i}>
-        {sampleNames[i]}
+      <Link
+        to={`${url}/:${usersState[i].userId}`}
+        onClick={() => setSelectedUser(usersState[i])}
+        id="chatlink"
+        key={i}
+      >
+        {usersState[i].username}
+        {usersState[i].self && " (yourself)"}
+        {/* checks if user is connected and displays connected if they are */}
+        {usersState[i].connected && " connected!"}
       </Link>
     );
     matchesChats.push(
-      <Route path={`${url}/:${sampleNames[i]}`} key={i}></Route>
+      <Route path={`${url}/:${usersState[i].userId}`} key={i}></Route>
     );
   }
 
@@ -81,15 +134,30 @@ function ChatContent(props) {
   //   );
   // }
 
-  function sendMessage() {
-    // something something websockets
+  function sendMessage(content) {
+    //when user sends message, it emits the userId of user they're sending it to
+    //need to grab selectedUser from when the user clicks the link
+    console.log("selectedUser", selectedUser);
+    if (selectedUser) {
+      socket.emit("private message", {
+        content,
+        to: selectedUser.id,
+      });
+      //pushes to message to selectedUser. We'd want to push to state and db
+      selectedUser.messages.push({
+        content,
+        fromSelf: true,
+      });
+    }
     // whats the endpath for database updates?
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch(actions.updateMessages(data.messages));
-      })
-      .catch((err) => console.log(err));
+    //still need to push to db
+
+    // fetch(url)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     dispatch(actions.updateMessages(data.messages));
+    //   })
+    //   .catch((err) => console.log(err));
   }
 
   // useEffect(() => {
@@ -105,7 +173,48 @@ function ChatContent(props) {
   // }, []);
 
   // }
+  socket.on("private message", ({ content, from }) => {
+    //finds the user from users in state that matches the userId we sent message to
+    for (let i = 0; i < usersState.length; i++) {
+      const user = usersState[i];
+      if (user.userID === from) {
+        //pushes message to that user's messages prop
+        user.messages.push({
+          content,
+          fromSelf: false,
+        });
+        //checks if the user we sent message to doesn't match the selectedUser
+        if (user !== this.selectedUser) {
+          user.hasNewMessages = true;
+        }
+        break;
+      }
+    }
+  });
 
+  //connect and disconnect ares pecial events that are run upon connection and disconnection
+  //when socket connects, sets user.connected for self to true
+  socket.on("connect", () => {
+    usersState.forEach((user) => {
+      if (user.self) {
+        user.connected = true;
+      }
+    });
+  });
+  //when socket connects, sets user.connected for self to false
+  socket.on("disconnect", () => {
+    usersState.forEach((user) => {
+      if (user.self) {
+        user.connected = false;
+      }
+    });
+  });
+
+  const messageDisplay = () => {
+    const messages = selectedUser.messages.map((ele) => <p>{ele.content}</p>);
+    console.log("messages", messages);
+    return messages;
+  };
   return (
     <div id="chatContent">
       <center>
@@ -122,7 +231,10 @@ function ChatContent(props) {
           </Route>
           {matchesChats}
         </Switch>
-
+        <div id="chatbox">
+          <img src="https://i.imgur.com/TabKA8t.png" />
+          {selectedUser && messageDisplay()}
+        </div>
         <div id="inputsend">
           <input
             id="messageInput"
@@ -130,7 +242,7 @@ function ChatContent(props) {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           ></input>
-          <button onClick={sendMessage}>Send</button>
+          <button onClick={() => sendMessage(message)}>Send</button>
         </div>
       </main>
     </div>

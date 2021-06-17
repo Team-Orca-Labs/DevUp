@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
-import MatchesContent from '../components/MatchesContent';
-import LikesContent from '../components/LikesContent';
-import ExploreContent from '../components/ExploreContent';
-import ChatContent from '../components/ChatContent';
+import React from "react";
+import { connect } from "react-redux";
+import { Switch, Route } from "react-router-dom";
+import MatchesContent from "../components/MatchesContent";
+import LikesContent from "../components/LikesContent";
+import ExploreContent from "../components/ExploreContent";
+import ChatContent from "../components/ChatContent";
 
 function mapStateToProps(state) {
   return {
@@ -26,3 +26,6 @@ function MainContent(props) {
 }
 
 export default connect(mapStateToProps, null)(MainContent);
+
+// component={ChatContent}
+// props={(usersState, setUsersState)}
