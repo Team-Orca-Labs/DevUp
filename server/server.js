@@ -39,14 +39,16 @@ io.use((socket, next) => {
   next();
 });
 
-//send all existing users to client
+//send all existing users to clie
 io.on("connection", (socket) => {
+  console.log("socket", socket);
   const users = [];
   //loop over object of all currently connected Socket instances indexed by ID
   console.log("io.of", io.of("/").sockets);
   for (let [id, socket] of io.of("/").sockets) {
     users.push({
-      user: id,
+      id: id,
+      userId: socket.handshake.auth.userId,
       username: socket.username,
     });
   }
@@ -55,10 +57,20 @@ io.on("connection", (socket) => {
 
   // notify existing users that user has connected
   socket.broadcast.emit("user connected", {
-    id: socket.id,
+    id: socket.handshake.auth.userId,
     username: socket.username,
   });
+  socket.on("private message", ({ content, to }) => {
+    //emits to 'to' which is the given userId passed from client on private message event
+    //emits message from socket id
+    socket.to(to).emit("private message", {
+      content,
+      from: socket.handshake.auth.userId,
+    });
+  });
 });
+
+//emits message to specific userId - selectedUser.userID
 
 // routers
 app.use("/users", userRouter);

@@ -13,7 +13,6 @@ import Onboard from "./components/Onboard";
 import socket from "./socket";
 
 function App() {
-  const [usersState, setUsersState] = useState([]);
   const history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -35,13 +34,15 @@ function App() {
           dispatch(actions.updateUser(data.user));
           //store userId in socket.auth and start socket connection\
           console.log("data of user", data.user);
+          console.log("id", data.user.id);
           socket.auth = {
             username: data.user.username,
+            userId: JSON.stringify(data.user.id),
             id: data.user.id,
           };
-          socket.connect();
+          console.log();
+          socket.connect(data.user.id);
         })
-        .then(() => console.log("pp", socket))
         .catch(console.log);
     }
   }, []);
@@ -54,40 +55,6 @@ function App() {
     }
   });
 
-  const initReactiveProperties = (user) => {
-    user.connected = true;
-    user.messages = [];
-    user.hasNewMessages = false;
-  };
-
-  socket.on("users", (users) => {
-    users.forEach((user) => {
-      user.self = user.userID === socket.id;
-      initReactiveProperties(user);
-    });
-    // put the current user first, and then sort by username
-    users = users.sort((a, b) => {
-      if (a.self) return -1;
-      if (b.self) return 1;
-      if (a.username < b.username) return -1;
-      return a.username > b.username ? 1 : 0;
-    });
-    setUsersState(users);
-  });
-
-  //sets user self to active and push to users array
-  socket.on("user connected", (user) => {
-    initReactiveProperties(user);
-    setUsersState([...usersState, user]);
-    // users.push(user);
-  });
-
-  // after state change
-  useEffect(() => {
-    console.log(setUsersState);
-  }, [usersState]);
-
-  console.log("usersState", usersState);
   return (
     <Switch>
       <Route path="/edit" component={Onboard} />
